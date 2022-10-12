@@ -1,0 +1,47 @@
+
+1.
+
+The CPU utilization should be at 100%, since we specified to not use any I/O.
+
+2.
+
+The first process will only take 4 clock ticks long, since we've only given it 4 instructions all being handled by the CPU. 
+The other instruction issues an I/O which takes 5 ticks to complete (default). The CPU also needs one tick to first initiate the I/O and also
+just one tick to complete it. Adding it all up together leads to 11 ticks overall.
+
+3.
+
+This time we start by initiating the I/O in the first tick. After that this process changes into the BLOCKED state making sure that other processes 
+being able to use the CPU during that time. Which means that after the first tick we are already running the second process. And because we've only
+issued 4 instructions again we should be able to complete process 2 by tick 5, while the I/O should finish after tick 6. On tick 7 the CPU completes 
+the I/O ending the trace.
+
+4.
+
+With the flag -S SWITCH_ON_END we tell the system to wait until I/O is completely done, therefore waiting the whole 7 ticks to hande I/O initialization
+and completion until the next process begins. Therefore we have CPU downtime of approx. 5 ticks and a total trace of 11 ticks.
+
+5.
+
+Setting the flag to -S SWITCH_ON_IO tells the system to not wait until I/O is completely done but rather immediately switch the process, whenever
+another process is in READY state. Because of that we should see the same result we saw in question 3. Meaning the trace should
+end after 7 ticks.
+
+6.
+
+We start by giving a process three instrcutions all for I/O and we also specified to explicitely wait for any process that runs to complete until
+we run I/O again. Since we start with the I/O our second process can already run in the second tick. The second process then completes at tick 6,
+because we've given it 5 instructions to complete. And now process 3 and 4 run before we've even completed the first I/O because of we told I/O
+to wait. This leads to a lot of downtime for both the CPU and the I/O because they both wait for each other. (31 ticks)
+
+7.
+
+By telling the system to immediately run after completing the I/O leads to a much higher uptime. We use that make sure to keep the I/O busy for much longer,
+while also keeping the CPU running on other processes instead of waiting for the I/O. (21 ticks) !!Running a process that just completed it's I/O might be a good
+idea, because it's what the system started first and therefore should be completed before other process.!!
+
+8.
+
+In some cases IO_RUN_IMMEDIATE and IO_RUN_LATER will not have a huge or sometimes any difference for the reason that if multiple processes run
+only on I/O, the CPU doesn't have to do anything anyway leading to only the default BLOCKED time issued here.
+On the other hand it's always better to SWITCH_ON_IO making sure the CPU gets used efficiently and not wasting any time waiting for the I/O to finish.
