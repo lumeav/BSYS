@@ -1,0 +1,35 @@
+1.
+
+DIY
+
+2.
+
+Let's say we run the simulator with 100 actions using a fork_percentage at 90%. We see that at the end of the simulation we have a huge tree with barely and 
+EXITS.
+On the other hand a fork_percentage of just 10% leads to mostly just trees that have just one branch at most (since at 0 branches it always forks).
+
+3.
+
+DIY. There can only ever be two options either a fork or an exit.
+
+4.
+
+The first thing that came into my mind is that deleting c will also delete all of it's children but to my suprise c's children will get added to the root
+of the process tree. However using the -R flag, c's children will only add to the parent of c, which in this case is b. Using the -L flag we disallow any
+exits that still have children. In this example we won't be able to exit c (because of its children d and e), but it is possible for d and e to exit, for
+they do not have any children.
+
+5.
+
+DIY.
+
+6.
+
+By using -t and -F together you are simply left with a tree at the end. Finding out which EXACT actions have been made is only possible if you know how many
+actions have been applied to this specific tree. 
+                               a
+                               └── b
+
+A tree that looks like this could either be just 1 action or 99. It is impossible to say unless you are given the exact amount of actions.
+IF however you specifically put the fork_percentage to 100% then the tree above can only be possible with just 1 action making it possible
+to find out which exact actions have been made.
