@@ -1,0 +1,6 @@
+
+
+7. 
+
+    What you can see is the memory map of a process.
+    Modern adress spaces consists of many libraries.
