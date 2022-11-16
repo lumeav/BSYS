@@ -64,5 +64,14 @@ Es gibt mehr valide Adressen (valid bits in page table entrys werden gesetzt).
 ## what happens if the address-space size is bigger than physical mem-
 ## ory?
 
--P 8 -a 2048 -p 1024 -v -c
+-P 8 -a 2048 -p 1024
 Error: physical memory size must be GREATER than address space size
+
+-P 8 -a 512 -p 2G
+Error: must use smaller sizes (less than 1 GB) for this simulation.
+
+-P 1024 -a 256 -p 512
+Error in argument: address space must be a multiple of the pagesize
+
+-P 16 -a 48 -p 512
+Error in argument: address space must be a power of 2
