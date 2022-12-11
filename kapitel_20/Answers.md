@@ -20,6 +20,8 @@
     7f = 01111111 = 0 <- invalid 
     page table entry invalid
 
+    
+
 3.
     Because of the extra memory reference on a miss it will take longer to be handled,
     but I think it will lead to a few more misses because of more memory references.
