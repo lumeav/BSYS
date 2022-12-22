@@ -60,7 +60,7 @@ int list_lookup(list_t *l, int key) {
         }
         Mutex_lock(&curr->next->lock);
         Mutex_unlock(&curr->lock);
-        //Only release lock after acquiring the lock of the next node, preventing overtaking
+        //Den Lock erst befreien nachdem man den Lock des nächsten Knotens erlangt, um overtaking zu verhindern (hand-over-hand)
         curr = curr->next;
     }
     return rv; // failure and success
@@ -71,10 +71,12 @@ void* thread(void* arguments) {
     for (int i = 1; i <= args->numberLoops; i++) {
         list_insert(args->list, args->threadID * args->numberLoops + i);
     }
+    //Bevor man den linkedListInsertScript ausführt, sollte man die nächste for-Schleife auskommentieren
+    /*
     for (int i = 1; i <= args->numberLoops; i++) {
         list_lookup(args->list, args->threadID * args->numberLoops + i);
     }
-    
+    */
     return NULL;
 }
 

@@ -13,7 +13,7 @@ output=""
 # Der Zaehler mit dem die Tresholds-Groesse bestimmt wird, wird quadratisch
 # erhöht, da es in der Grafik im Buch auch so gemacht wurde
 for ((i=1; i<=1024; i=i*2)); do
-    command2="$program -l 100000 -t 4 -n $i >> $file"
+    command2="$program -l 1000000 -t 4 -n $i >> $file"
     eval $command2
     echo $i >> $file
 done

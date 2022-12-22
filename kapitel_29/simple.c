@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 	
     //cpu_set_t  mask;
     //CPU_ZERO(&mask);
-    //CPU_SET(4, &mask);
+    //CPU_SET(3, &mask);
     //sched_setaffinity(0, sizeof(mask), &mask); 
 	//test with different numbers of cpus: lscpu or cat /proc/cpuinfo  
 	
