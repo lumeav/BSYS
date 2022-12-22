@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file="linkedListData"
+file="linkedListInsertData"
 
 if [ -f "$file" ] ; then
     command1="rm $file" 
