@@ -8,7 +8,7 @@ if [ -f "$file" ] ; then
 fi
 program="./linkedList"
 
-for ((i=0; i<=200; i++)); do
+for ((i=0; i<=200; i = i + 2)); do
     command2="$program -l 100 -t $i >> $file"
     eval $command2
     echo $i >> $file

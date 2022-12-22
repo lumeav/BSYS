@@ -10,11 +10,12 @@ int threads = 1;
 typedef struct node_t {
     int value;
     struct node_t *next;
+    pthread_mutex_t lock;
 } node_t;
 
 typedef struct __list_t {
     node_t *head;
-    pthread_mutex_t lock;
+    pthread_mutex_t listLock;
 } list_t;
 
 typedef struct __thread_arguments {
@@ -27,7 +28,7 @@ void list_init(list_t *l) {
     // Dummy Knoten wird hinzugefuegt, damit beim Einfuegen des ersten Knotens 
     // head != NULL ist. Ansonsten koennte eine Race Condition auftreten
     node_t *new = Malloc(sizeof(node_t));
-    Mutex_init(&l->lock);
+    Mutex_init(&new->lock);
     new->next = NULL;
     new->value = 0;
     l->head = new;
@@ -36,28 +37,33 @@ void list_init(list_t *l) {
 void list_insert(list_t *l, int key) {
     node_t *new = Malloc(sizeof(node_t));
     new->value = key;
+    Mutex_init(&new->lock);
 
-    Mutex_lock(&l->lock);
+    Mutex_lock(&l->listLock);
 
     new->next = l->head;
     l->head = new;
 
-    Mutex_unlock(&l->lock);
+    Mutex_unlock(&l->listLock);
+
 }
 
 int list_lookup(list_t *l, int key) {
     int rv = -1;
-    Mutex_lock(&l->lock);
     node_t *curr = l->head;
+    Mutex_lock(&curr->lock);
     while (curr) {
         if (curr->value == key) {
+            Mutex_unlock(&curr->lock);
             rv = 0;
             break;
         }
+        Mutex_lock(&curr->next->lock);
+        Mutex_unlock(&curr->lock);
+        //Only release lock after acquiring the lock of the next node, preventing overtaking
         curr = curr->next;
     }
-    Mutex_unlock(&l->lock);
-    return rv; // failure
+    return rv; // failure and success
 }
 
 void* thread(void* arguments) {
@@ -68,6 +74,7 @@ void* thread(void* arguments) {
     for (int i = 1; i <= args->numberLoops; i++) {
         list_lookup(args->list, args->threadID * args->numberLoops + i);
     }
+    
     return NULL;
 }
 
