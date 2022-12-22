@@ -1,0 +1,12 @@
+import sys
+from numpy import *
+import matplotlib.pyplot as plt
+
+data = genfromtxt("linkedListData")
+
+fig, ax = plt.subplots()
+ax.plot(data[:,1], data[:,0] / 1000000, marker='o')
+ax.set_title("Linked List Performance")
+ax.set_xlabel("Threads")
+ax.set_ylabel("Time (ms)")
+fig.savefig("linkedListGraph.png")
